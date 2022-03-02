@@ -4,6 +4,8 @@ namespace KarateChop;
 
 public class KarateChop
 {
+    private int cursor = 0;
+    
     public int ChopChop(int chopValue, int[] array)
     {
         if (array == Array.Empty<int>())
@@ -23,7 +25,8 @@ public class KarateChop
     
     private int checkForChopValue(int chopValue, int[] array)
     {
-        return chopValue == array[0] ? Array.IndexOf(array, chopValue) : -1;
+        var result = chopValue == array[0] ? cursor : -1;
+        return result;
     }
 
     private int[] splitArray(int chopValue, int[] array)
@@ -38,8 +41,6 @@ public class KarateChop
             if(array[midpoint] == chopValue)
                 return new [] {array[midpoint]};
         }
-            
-            
         
         var lowSplit = new int[lowBounds];
         var highSplit = new int[array.Length - highBounds];
@@ -52,6 +53,17 @@ public class KarateChop
 
     private int[] arraySelector(int chopValue, int[] lowSplit, int[] highSplit)
     {
-        return lowSplit[^1] <= chopValue ? highSplit : lowSplit;
+        var isInLowSplit = lowSplit[^1] >= chopValue;
+
+        if (isInLowSplit)
+        {
+            return lowSplit;
+        }
+        else
+        {
+            cursor += lowSplit.Length + 1;
+            return highSplit;
+        }
+        
     }
 }
