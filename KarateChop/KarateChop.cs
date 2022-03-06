@@ -32,7 +32,6 @@ public class KarateChop
         if (valueAtChopPos == _chopValue)
         {
             _break = true;
-            _pos = chopPos;
         }
             
         if (array.Length <= 1)
@@ -69,7 +68,7 @@ public class KarateChop
         var highSection = new int[array.Length - highBounds];
         Array.Copy(array, highBounds, highSection, 0, array.Length - highBounds);
         
-        _pos++;
+        _pos += (highBounds-1);
         
         return highSection;
     }
