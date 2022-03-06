@@ -39,6 +39,9 @@ public class KarateChopTests: IClassFixture<ChopperFixture>
     {
         var karateChop = new KarateChop.KarateChop();
         var (chopValue, array) = _fixture.TestCases[testCaseId];
-        karateChop.ChopChop(chopValue, array).Should().Be(expectedResult);
+        karateChop
+            .ChopChop(chopValue, array)
+            .Should()
+            .Be(expectedResult);
     }
 }

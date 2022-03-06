@@ -16,9 +16,9 @@ public class ChopperFixture: IDisposable
 
     private void InitializeTestCases()
     {
-        TestCases.Add(1, new Tuple<int, int[]>(-1, Array.Empty<int>()));
-        TestCases.Add(2, new Tuple<int, int[]>(-1, new [] {1}));
-        TestCases.Add(3, new Tuple<int, int[]>(0, new [] {1}));
+        TestCases.Add(1, new Tuple<int, int[]>(3, Array.Empty<int>()));
+        TestCases.Add(2, new Tuple<int, int[]>(3, new [] {1}));
+        TestCases.Add(3, new Tuple<int, int[]>(1, new [] {1}));
         
         TestCases.Add(4, new Tuple<int, int[]>(1, new [] {1, 3, 5}));
         TestCases.Add(5, new Tuple<int, int[]>(3, new [] {1, 3, 5}));
