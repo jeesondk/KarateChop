@@ -1,10 +1,11 @@
-using System.ComponentModel.Design.Serialization;
-
 namespace KarateChop;
 
 public class KarateChop
 {
     private int _pos = 0;
+    private bool _break = false;
+    private int[] _sourceArray;
+    private int _chopValue;
 
     public int ChopChop(int chopValue, int[] array)
     {
@@ -12,28 +13,38 @@ public class KarateChop
         if (!isValid)
             return -1;
 
-        var initChopPos = ChopPos(array.Length);
+        _sourceArray = array;
+        _chopValue = chopValue;
+        _pos = ChopPos(array.Length);
         
-        _pos = initChopPos;
-        
-        var hasMatch = DoChop(chopValue, array);
+        var hasMatch = DoChop(array);
         if (hasMatch)
             return _pos;
         else
             return -1;
     }
 
-    private bool DoChop(int chopValue, int[] array)
+    private bool DoChop(int[] array)
     {
-        var valueAtChopPos = array[ChopPos(array.Length)];
+        var chopPos = ChopPos(array.Length);
+        var valueAtChopPos = array[chopPos];
 
-        while (array.Length > 1)
+        if (valueAtChopPos == _chopValue)
         {
-            var arraySection = valueAtChopPos > chopValue ? ChopHigh(array) : ChopLow(array);
-            DoChop(chopValue, arraySection);
+            _break = true;
+            _pos = chopPos;
+        }
+            
+        if (array.Length <= 1)
+            _break = true;
+        
+        while (!_break)
+        {
+            var arraySection = valueAtChopPos <= _chopValue ? ChopHigh(array) : ChopLow(array);
+            DoChop(arraySection);
         }
 
-        return CheckValue(chopValue, array);
+        return CheckValue();
     }
 
     private bool ValidateArray(int[] array)
@@ -43,8 +54,9 @@ public class KarateChop
 
     private int[] ChopLow(int[] array)
     {
+        var lowBounds = array.Length / 2;
         var tmpPos = ChopPos(array.Length);
-        var lowSection = Array.Empty<int>();
+        var lowSection = new int[lowBounds];
         Array.Copy(array, lowSection, tmpPos);
         _pos--;
         
@@ -53,9 +65,10 @@ public class KarateChop
     
     private int[] ChopHigh(int[] array)
     {
-        var tmpPos = ChopPos(array.Length);
-        var highSection = Array.Empty<int>();
-        Array.Copy(array, tmpPos, highSection, 0, array.Length);
+        var highBounds = array.Length % 2 == 0 ? array.Length / 2 : array.Length / 2 + 1;
+        var highSection = new int[array.Length - highBounds];
+        Array.Copy(array, highBounds, highSection, 0, array.Length - highBounds);
+        
         _pos++;
         
         return highSection;
@@ -66,8 +79,8 @@ public class KarateChop
         return arrayLength / 2;
     }
 
-    private bool CheckValue(int chopValue, int[] arraySection)
+    private bool CheckValue()
     {
-        return arraySection[0] == chopValue;
+        return (_sourceArray[_pos] == _chopValue);
     }
 }
