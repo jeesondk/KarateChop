@@ -27,7 +27,7 @@ public class KarateChopTests: IClassFixture<ChopperFixture>
     [InlineData(10, -1)]
     
     [InlineData(11, 0)]
-    [InlineData(12, 2)]
+    [InlineData(12, 1)]
     [InlineData(13, 2)]
     [InlineData(14, 3)]
     [InlineData(15, -1)]
